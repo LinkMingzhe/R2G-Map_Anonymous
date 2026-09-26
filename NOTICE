@@ -1,0 +1,5 @@
+RG-LSM
+Original release code: Apache-2.0.
+Includes adapted Bytedance 1d-tokenizer code, Copyright (2024) Bytedance Ltd. and/or its affiliates.
+Includes Google LLC / Hugging Face Apache-2.0 components.
+See THIRD_PARTY_NOTICES.md for component-specific scope and modifications.

@@ -1,0 +1,178 @@
+experiment:
+  project: RG-LSM
+  name: rg_lsm_ddbc_sequential_inference
+  output_dir: ${run_root}/inference
+  logging_dir: ${run_root}/inference/logs
+model:
+  condition_source: hidden_latent
+  item_info_path: ${data_root}/clhe/item_info.json
+  cate_id_to_text_path: ${data_root}/clhe/cate_id_to_text.json
+  include_category_in_prompt: true
+  prompt_template: A fashion item image of {category}, on white background.
+  generic_prompt: A fashion item image, on white background.
+  clip_model: ViT-L-14-336
+  clip_pretrained: openai
+  prompt_cache_pt: ${run_root}/cache/prompt.pt
+  prompt_batch_size: 32
+  content_feature_path: ${data_root}/clhe/content_feature.pt
+  description_feature_path: ${data_root}/clhe/description_feature.pt
+  cf_feature_path: ${data_root}/clhe/item_cf_feature.pt
+  condition:
+  - content
+  latent_input_dim: 64
+  latent_slots: 4
+  content_dim: 768
+  description_dim: 768
+  cf_dim: 64
+  qformer_dim: 256
+  qformer_layers: 4
+  qformer_heads: 8
+  qformer_ffn_mult: 4
+  num_qformer_queries: 6
+  vq_model:
+    quantize_mode: vq
+    codebook_size: 8192
+    token_size: 64
+    num_latent_tokens: 128
+    text_embed_dim: 768
+  maskgen:
+    decoder_embed_dim: 1024
+    decoder_depth: 16
+    decoder_num_heads: 16
+    micro_condition: false
+    micro_condition_embed_dim: 256
+    text_drop_prob: 0.0
+    condition_num_classes: 1000
+    weight_tying: true
+    cfg: 6.0
+    cfg_schedule: cosine
+    cfg_decay_scale_pow: 1.0
+    num_iter: 16
+    randomize_temperature: 1.5
+    softmax_temperature_annealing: true
+    prob_sorting: true
+    mask_schedule_strategy: arccos
+  use_timestep_condition: true
+losses:
+  label_smoothing: 0.1
+  loss_weight_unmasked_token: 0.1
+  ranking_temperature: 0.1
+  ranking_pool: raw
+  ranking_modality_weights:
+    content: 1.0
+    description: 1.0
+    cf: 1.0
+  contrastive_dim: 256
+  contrastive_temperature: 0.1
+  contrastive_negative_threshold: 0.4
+  contrastive_warmup_ratio: 0.0
+  kl_temperature: 2.0
+  weights:
+    ce: 1.0
+    l2: 1.0
+    ranking: 0.1
+    align: 1.0
+    contrastive: 0.0
+    kl: 0.2
+  stage2_pred_weights:
+    early: 0.05
+    late: 0.02
+dataset:
+  tatitok_token_json: ${data_root}/clhe/train_tatitok/tatitok_token_128.json
+  hidden_sampleTimestep_acc: false
+  hidden_sampleTimestep_acc_token_key: pred_hidden_final
+  hidden_top_key: top1
+  hidden_step: 256
+  hidden_token_positions:
+  - 19
+  - 20
+  - 21
+  - 22
+  content_feature_path: ${data_root}/clhe/content_feature.pt
+  description_feature_path: ${data_root}/clhe/description_feature.pt
+  cf_feature_path: ${data_root}/clhe/item_cf_feature.pt
+  test:
+    hidden_npy: ${data_root}/clhe/hidden/ddbc/test_hidden_sampleTimestep_by_bundle.npy
+    input_txt: ${data_root}/clhe/splits/test_input.txt
+    gt_txt: ${data_root}/clhe/splits/test_gt_first.txt
+    cache_pt: ${run_root}/cache/test_eval.pt
+    gt_all_txt: ${data_root}/clhe/splits/test_gt_all.txt
+  supervise_all_gt: false
+  release_counts:
+    test:
+      contexts: 2483
+      targets: 3171
+training:
+  gpu_id: 0
+inference:
+  checkpoint_mode: single
+  checkpoint_path: ${ckpt_root}/rg_lsm/ddbc_sequential/stage2_full/checkpoint-9000
+  image_output_dir: ${run_root}/inference
+  use_ema_weights: true
+  batch_size: 16
+  num_workers: 4
+  max_bundles: 0
+  repeat_per_bundle: 1
+  seed: 42
+  gpu_id: 0
+  enable_tf32: true
+  decode_modes:
+  - pred_text
+  - pred_none
+  - gt
+  tatitok_decoder_path: ${ckpt_root}/tokenizer_tatitok_bl128_vq
+  gt_image_dir: ${data_root}/images
+  use_decoded_gt_for_fid: false
+  decoded_gt_mode: text
+  use_cfg: true
+  guidance_scale: 6.0
+  cfg_schedule: cosine
+  cfg_decay_scale_pow: 1.0
+  num_iter: 16
+  randomize_temperature: 1.5
+  softmax_temperature_annealing: true
+  prob_sorting: true
+  token_constraint_mode: none
+  token_constraint_min_count: 1
+  token_constraint_topk: 0
+  logit_top_k: 0
+  final_step_no_gumbel: false
+  pred_tokens_txt: predicted_tokens.txt
+  compute_fid: false
+  fid_image_size: 256
+  fid_batch_size: 32
+  aggregate_fid_summary: false
+  aggregate_fid_summary_filename: all_checkpoints_fid_summary.txt
+  generation_quality_eval:
+    enable: false
+  skip_existing_checkpoints: false
+  skip_existing_rankings: false
+ranking:
+  enable: true
+  compute_raw: true
+  compute_acc: false
+  compute_all: true
+  compute_token: true
+  token_method: candidate_log_likelihood
+  token_likelihood_item_chunk_size: 2048
+  generate_visual_tokens: false
+  save_topk_images: 0
+  item_image_dir: ''
+  require_topk_images: true
+  feature_fusion_weights:
+    text: 0.2
+    content: 0.575
+    cf: 0.225
+  output_subdir: ranking
+  raw_meta_dir: ${data_root}/clhe/hidden/ddbc
+  raw_meta_file: test_hidden_sampleTimestep_by_bundle.npy
+  acc_meta_dir: ''
+  acc_meta_file: ''
+  loss_pool: raw
+  require_gt_in_candidate: true
+  topk: 50
+  aggregate_summary: false
+  aggregate_summary_filename: all_checkpoints_ranking_summary.txt
+data_root: ../dataset_anonymous
+ckpt_root: ../ckpt_anonymous
+run_root: runs/ddbc_sequential
