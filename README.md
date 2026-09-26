@@ -1,6 +1,6 @@
 # R2G-Map — anonymous inference release
 
-This project provides R2G-Map inference and local evaluation for bundle recommendation and **sequential recommendation**. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
+This project provides R2G-Map inference and local evaluation for bundle recommendation and sequential recommendation. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
 The four inference configurations are `ddbc_bundle`, `tiger_bundle`, `ddbc_sequential`, and `tiger_sequential`. 
 ## Layout and installation
 
