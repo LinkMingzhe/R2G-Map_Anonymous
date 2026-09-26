@@ -72,9 +72,8 @@ Sequential checkpoints are the **fixed final step 9,000** of the current augment
 | bundle recommendation | 2,521 | 2 | 2 | 5,042 | 5,042 |
 | sequential recommendation | 2,483 | 3 | 1–2 | 3,171 | 2,483 |
 
-Sequential test has 1,795 one-GT contexts and 688 two-GT contexts. Both backbone test latent exports are included for each task (four files total). All catalog features, visual token IDs and numeric item metadata needed for full-catalog ranking are retained. **Only the 3,266 unique GT images referenced by the bundle/sequential test sets** are included; the image folder is not the full catalog image collection. No train or validation records are included. See [test-data README](../dataset_anonymous/README.md).
+Sequential test has 1,795 one-GT contexts and 688 two-GT contexts. Both backbone test latent exports are included for each task (four files total). All catalog features, visual token IDs and numeric item metadata needed for full-catalog ranking are retained. 
 
-The sequential input records are POG-derived outfit records arranged as a prediction sequence; this release does not claim they are original chronological user-interaction logs. The internal `clhe/` asset directory preserves benchmark compatibility without changing the public task name.
 
 ## Validation, privacy and licensing
 
