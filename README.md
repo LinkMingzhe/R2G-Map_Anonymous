@@ -1,6 +1,6 @@
-# RG-LSM — anonymous inference release
+# R2G-Map — anonymous inference release
 
-This project provides RG-LSM inference and local evaluation for bundle recommendation and **sequential recommendation**. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
+This project provides R2G-Map inference and local evaluation for bundle recommendation and **sequential recommendation**. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
 The four inference configurations are `ddbc_bundle`, `tiger_bundle`, `ddbc_sequential`, and `tiger_sequential`. 
 ## Layout and installation
 
@@ -8,7 +8,7 @@ Use the dedicated anonymous asset archives:
 
 ```text
 release/
-  RG-LSM_Anonymous/
+  R2G-Map_Anonymous/
   dataset_anonymous/
   ckpt_anonymous/
 ```
@@ -39,7 +39,7 @@ The [dataset](https://drive.google.com/file/d/1hxYw1cRo3BiHs3d_2zTNPWWR36fQAuJK/
 
 ## Main-model inference
 
-Run inside this code directory. All four task names run RG-LSM; the prefix selects the DDBC or TIGER conditioning latent.
+Run inside this code directory. All four task names run R2G-Map; the prefix selects the DDBC or TIGER conditioning latent.
 
 ```bash
 python inference.py --task ddbc_sequential --config-only
@@ -79,4 +79,4 @@ Sequential test has 1,795 one-GT contexts and 688 two-GT contexts. Both backbone
 
 The delivery-level `VALIDATION.json` records historical execution checks; `RELEASE_VALIDATION.json`, `PRIVACY_AUDIT.json` and `ARCHIVE_VALIDATION.json` describe the current packaging checks. These optional records are not loaded by the training or inference entrypoints. The current 18,000-step training defaults have only been checked statically; no training or inference was run for that configuration update. Packaging strips private author/server identifiers, training service metadata and source image text/EXIF metadata. Model weights are exported without optimizer/RNG state or private trainer objects; archive ownership is normalized. Public upstream license notices and necessary third-party attribution are retained.
 
-Original RG-LSM code is Apache-2.0; [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) records the separate scope of third-party code, benchmark data and upstream weights. Verify `SHA256SUMS` after extraction.
+Original R2G-Map code is Apache-2.0; [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md) records the separate scope of third-party code, benchmark data and upstream weights. Verify `SHA256SUMS` after extraction.
