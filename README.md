@@ -49,17 +49,9 @@ python inference.py --task ddbc_bundle --output runs/ddbc_bundle
 python inference.py --task tiger_bundle --output runs/tiger_bundle
 ```
 
-Defaults are the packaged **Stage2 EMA**, **CFG scale 6**, 16 sampling steps, cosine CFG schedule, seed 42, inference batch size 16 for sequential / 32 for bundle, and test split. `--no-cfg` disables classifier-free guidance. `--ranking-only` skips image decoding. `--dataset-root` and `--checkpoint-root` override the sibling asset directories. Resolved configs and rebased caches are written under the output directory.
+Defaults are the packaged **Stage2 EMA**, **CFG scale 6**, 16 sampling steps, cosine CFG schedule, seed 42, inference batch size 16 for sequential / 32 for bundle, and test split. `--no-cfg` disables classifier-free guidance. `--ranking-only` skips image decoding. `--dataset-root` and `--checkpoint-root` override the sibling asset directories. 
 
-For a quick CPU smoke test:
 
-```bash
-python inference.py --task tiger_sequential --device cpu --max-samples 2 --batch-size 2 --num-workers 0 --sampling-steps 2 --output runs/smoke
-```
-
-A limited-sample smoke test is not a full benchmark. `--max-samples 0` means the full split; the limit counts generation target rows (two per bundle, one per sequential context).
-
-Outputs are under `<output>/inference/`, including generated visual tokens, `*_pred_text.png`, `*_pred_none.png`, `*_gt.png`, and `ranking/ranking_details.npy`.
 
 ## Evaluation
 
@@ -71,11 +63,7 @@ python evaluate.py --task ddbc_bundle --output runs/ddbc_bundle/inference --mode
 
 Use `--mode ranking|quality|both`; `--device cpu` and `--batch-size` also apply to image evaluation. Full sequential ranking requires the complete split and reads `*_gt_all.txt`.
 
-Only `--split test` is supported in this package. Sequential data/latent/cache provenance is checked against packaged SHA-256 hashes before inference; replacing a latent file without its matching cache is rejected. The anonymous package has no cache-rebuild or training workflow.
-
-Sequential checkpoints are the **fixed final step 9,000** of the current augmented-data experiment, after Stage1 10,000 steps. The preserved bundle checkpoints used historical post-hoc selection involving test image quality; they must not be presented as validation-only selection.
-
-Candidate ranking inserts missing GT items into the upstream candidate pool and therefore measures reranking conditional on coverage. All ranking uses the entire 31,217-item catalog. Sequential ranking evaluates all one or two GTs. Quality generates one image per sequential context and pairs it with the **first GT**, with `pred_text` and `pred_none` decoders. Text decoding uses the benchmark target-category prompt. IS is the POG **reference-uniform-50-way** score, not conventional marginal-distribution IS; IS-acc@1/3 are category accuracies. LPIPS uses AlexNet and lower is better.
+Sequential checkpoints are the **fixed final step 9,000** of the current augmented-data experiment, after Stage1 10,000 steps.
 
 ## Test-data scope
 
