@@ -1,9 +1,7 @@
 # RG-LSM — anonymous inference release
 
-This package provides **test-only** RG-LSM inference and local evaluation for bundle recommendation and **sequential recommendation**. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
-
-The four inference configurations are `ddbc_bundle`, `tiger_bundle`, `ddbc_sequential`, and `tiger_sequential`. The full release trains each task for Stage1 10,000 steps and TSP Stage2 **18,000 steps** by default. This anonymous package remains inference-only. Its packaged sequential checkpoints come from the completed 9,000-step run; updating the training defaults does not change those weights.
-
+This project provides RG-LSM inference and local evaluation for bundle recommendation and **sequential recommendation**. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
+The four inference configurations are `ddbc_bundle`, `tiger_bundle`, `ddbc_sequential`, and `tiger_sequential`. The full release trains each task for Stage1 10,000 steps and TSP Stage2 **18,000 steps** by default. This anonymous package remains inference-only. 
 ## Layout and installation
 
 Use the dedicated anonymous asset archives:
@@ -36,6 +34,8 @@ For CPU execution use the PyTorch `https://download.pytorch.org/whl/cpu` wheel i
 | `tiger_sequential` | `rg_lsm/tiger_sequential/stage2_full/checkpoint-9000/ema_model/` |
 
 The checkpoint root is `../ckpt_anonymous`. It contains only main Stage2 EMA inference weights, the TA-TiTok decoder, and local quality-evaluation weights. Sequential models are the fixed final step 9,000 after training on the current augmented dataset (50,464 contexts / 75,384 supervised targets). This states model provenance; training records are not included in the anonymous package.
+
+The [dataset]([DATASET_URL](https://drive.google.com/file/d/1hxYw1cRo3BiHs3d_2zTNPWWR36fQAuJK/view?usp=sharing)) and [pretrained checkpoints]([CHECKPOINT_URL](https://drive.google.com/file/d/1v9v-CdY6Zci_3-e081Pib6DcibPesTEr/view?usp=drive_link)) are available for download.
 
 ## Main-model inference
 
