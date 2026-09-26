@@ -1,7 +1,7 @@
 # RG-LSM — anonymous inference release
 
 This project provides RG-LSM inference and local evaluation for bundle recommendation and **sequential recommendation**. It consumes supplied DDBC/TIGER hidden latents. It contains no training entry point, train/validation split, train/validation latent cache, Stage1 initialization, or upstream backbone checkpoint/exporter.
-The four inference configurations are `ddbc_bundle`, `tiger_bundle`, `ddbc_sequential`, and `tiger_sequential`. The full release trains each task for Stage1 10,000 steps and TSP Stage2 **18,000 steps** by default. This anonymous package remains inference-only. 
+The four inference configurations are `ddbc_bundle`, `tiger_bundle`, `ddbc_sequential`, and `tiger_sequential`. 
 ## Layout and installation
 
 Use the dedicated anonymous asset archives:
