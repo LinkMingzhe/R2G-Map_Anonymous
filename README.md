@@ -35,7 +35,7 @@ For CPU execution use the PyTorch `https://download.pytorch.org/whl/cpu` wheel i
 
 The checkpoint root is `../ckpt_anonymous`. It contains only main Stage2 EMA inference weights, the TA-TiTok decoder, and local quality-evaluation weights. Sequential models are the fixed final step 9,000 after training on the current augmented dataset (50,464 contexts / 75,384 supervised targets). This states model provenance; training records are not included in the anonymous package.
 
-The [dataset]([DATASET_URL](https://drive.google.com/file/d/1hxYw1cRo3BiHs3d_2zTNPWWR36fQAuJK/view?usp=sharing)) and [pretrained checkpoints]([CHECKPOINT_URL](https://drive.google.com/file/d/1v9v-CdY6Zci_3-e081Pib6DcibPesTEr/view?usp=drive_link)) are available for download.
+The [dataset](https://drive.google.com/file/d/1hxYw1cRo3BiHs3d_2zTNPWWR36fQAuJK/view?usp=sharing) and [pretrained checkpoints](https://drive.google.com/file/d/1v9v-CdY6Zci_3-e081Pib6DcibPesTEr/view?usp=drive_link) are available for download.
 
 ## Main-model inference
 
